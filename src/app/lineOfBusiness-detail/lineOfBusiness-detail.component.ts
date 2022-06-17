@@ -5,6 +5,8 @@ import { Location } from '@angular/common';
 import { LineOfBusiness } from '../LineOfBusiness';
 import { LineOfBusinessService } from '../lineOfBusiness.service';
 
+import { InMemoryDataService } from '../in-memory-data.service';
+
 @Component({
   selector: 'app-lineOfBusiness-detail',
   templateUrl: './lineOfBusiness-detail.component.html',
@@ -28,6 +30,14 @@ export class LineOfBusinessDetailComponent implements OnInit {
     this.lineOfBusinessService.getLineOfBusiness(id)
       .subscribe(lineOfBusiness => this.lineOfBusiness = lineOfBusiness);
   }
+
+  // New method to get the number of quotes on a particular business
+  getLineOfBusinessQuotes(): number {
+    const id = parseInt(this.route.snapshot.paramMap.get('id')!, 10);
+    return InMemoryDataService.findNumberOfQuotes(this.lineOfBusinessService.getLineOfBusiness(id), InMemoryDataService.createDb().recentQuotes);
+  }
+
+  quotes = this.getLineOfBusinessQuotes();
 
   goBack(): void {
     this.location.back();
