@@ -40,36 +40,8 @@ export class InMemoryDataService implements InMemoryDbService {
     return linesOfBusiness.length > 0 ? Math.max(...linesOfBusiness.map(lineOfBusiness => lineOfBusiness.id)) + 1 : 11;
   }
 
-  // Used to find the line with the most quotes
-  // Will eventually be displayed on every page
-  public static findMostUsedLine(linesOfBusiness: LineOfBusiness[], recentQuotes: {id: number, quoteNumber: string, lineOfBusiness: number}[]): String {
-    let max = 0;
-    let counter = 0;
-    let retVal = '';
-
-    // Go through each line of business
-    // Keep track of the most popular line and the second most popular line based on number of quotes
-    for(var val of linesOfBusiness){
-      for(var quote of recentQuotes){
-        if(quote.lineOfBusiness == val.id){
-          counter++;
-        }
-      }
-
-      // If the new line "val" has more quotes than the current leader:
-      // Make val the new most popular
-      if(counter > max){
-        max = counter;
-        retVal = val.name;
-      }
-      counter = 0;
-    }
-
-    return retVal;
-  }
-
-  // Used to find the line with the second most quotes
-  public static findSecondMostUsedLine(linesOfBusiness: LineOfBusiness[], recentQuotes: {id: number, quoteNumber: string, lineOfBusiness: number}[]): String {
+  // Used to find the lines with the first and second most quotes
+  public static findFirstAndSecondMostUsedLine(linesOfBusiness: LineOfBusiness[], recentQuotes: {id: number, quoteNumber: string, lineOfBusiness: number}[]) {
     let max = 0;
     let second = 0;
     let counter = 0;
@@ -103,12 +75,8 @@ export class InMemoryDataService implements InMemoryDbService {
       counter = 0;
     }
 
-    return secondRetVal;    
+    return {retVal, secondRetVal};    
   }
-  // I realize after the fact that I could have forgone creating findMostUsedLine and instead done all of my implementation in findSecondMostUsedLine
-  // and returned {retVal, secondRetVal} to have access to both the top two businesses from one call, but I am running short on the allotted time and
-  // would need to recommit and change everything, but I wanted to let you know that I am aware of how this could be polished up to be more
-  // optimized and would definitely optimize this in an real work setting
 
 
 
